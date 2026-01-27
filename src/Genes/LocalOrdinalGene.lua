@@ -28,13 +28,13 @@
 
 local mathRandom = math.random
 
-local OrdinalGene = {}
+local LocalOrdinalGene = {}
 
-function OrdinalGene.new(parameterDictionary)
+function LocalOrdinalGene.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local self = setmetatable({}, OrdinalGene)
+	local self = setmetatable({}, LocalOrdinalGene)
 
 	local value = parameterDictionary.value or parameterDictionary[1] or 0
 
@@ -58,7 +58,7 @@ function OrdinalGene.new(parameterDictionary)
 
 end
 
-function OrdinalGene:mutate(forceMutate)
+function LocalOrdinalGene:mutate(forceMutate)
 
 	if (not forceMutate) and (self.mutationChance <= mathRandom()) then return end
 
@@ -128,10 +128,10 @@ function OrdinalGene:mutate(forceMutate)
 	
 end
 
-function OrdinalGene:__tostring()
+function LocalOrdinalGene:__tostring()
 
 	return tostring(self.value)
 
 end
 
-return OrdinalGene
+return LocalOrdinalGene
