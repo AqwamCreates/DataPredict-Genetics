@@ -1,0 +1,129 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Genetic Evolution Library (DataPredict Genetics)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict-Genetics/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
+local mathRandom = math.random
+
+local GlobalOrdinalGene = {}
+
+function GlobalOrdinalGene.new(parameterDictionary)
+
+	parameterDictionary = parameterDictionary or {}
+
+	local self = setmetatable({}, GlobalOrdinalGene)
+
+	local value = parameterDictionary.value or parameterDictionary[1] or 0
+
+	local mutationChance = parameterDictionary.mutationChance or parameterDictionary[2] or 0
+
+	local mutationChoiceArray =  parameterDictionary.mutationChoiceArray or parameterDictionary[3] or {value}
+
+	local numberOfMutationChoices = #mutationChoiceArray
+
+	local mutationWeightArray = parameterDictionary.mutationWeightArray or parameterDictionary[4] or table.create(numberOfMutationChoices, 1)
+	
+	local indexChange = parameterDictionary.indexChange or parameterDictionary[5] or 1
+
+	self.value = value
+
+	self.mutationChance = mutationChance
+
+	self.mutationChoiceArray = mutationChoiceArray
+
+	self.mutationWeightArray = mutationWeightArray
+	
+	self.indexChange = indexChange
+
+	return self
+
+end
+
+function GlobalOrdinalGene:mutate(forceMutate)
+
+	if (not forceMutate) and (self.mutationChance <= mathRandom()) then return end
+
+	local mutationChoiceArray = self.mutationChoiceArray
+	
+	local mutationWeightArray = self.mutationWeightArray
+	
+	local indexChange = self.indexChange
+	
+	local numberOfMutationChoices = #mutationChoiceArray
+	
+	local arrayIndex = table.find(mutationChoiceArray, self.value)
+	
+	if (not arrayIndex) then
+		
+		self.value = mutationChoiceArray[mathRandom(numberOfMutationChoices)]
+		
+		return
+		
+	end
+
+	local totalWeight = 0
+	
+	for _, weight in ipairs(mutationWeightArray) do totalWeight = totalWeight + weight end
+	
+	local randomPoint = mathRandom() * totalWeight
+	
+	local accumulatedWeight = 0
+	
+	local currentIndex = arrayIndex
+	
+	local newValue
+	
+	repeat
+		
+		accumulatedWeight = accumulatedWeight + mutationWeightArray[currentIndex]
+		
+		if (randomPoint <= accumulatedWeight) then newValue = mutationChoiceArray[currentIndex] end
+		
+		currentIndex = currentIndex + indexChange
+		
+		if (currentIndex > numberOfMutationChoices) then
+			
+			currentIndex = currentIndex - numberOfMutationChoices
+			
+		elseif (currentIndex <= 0) then
+			
+			currentIndex = numberOfMutationChoices + currentIndex
+			
+		end
+		
+	until newValue
+	
+	self.value = newValue
+	
+end
+
+function GlobalOrdinalGene:__tostring()
+
+	return tostring(self.value)
+
+end
+
+return GlobalOrdinalGene
