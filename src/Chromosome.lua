@@ -30,11 +30,7 @@ function Chromosome:activate()
 	
 	local valueArray = {}
 	
-	for i, gene in ipairs(self.geneArray) do
-		
-		valueArray[i] = gene.value
-		
-	end
+	for i, Gene in ipairs(self.geneArray) do valueArray[i] = Gene.value end
 	
 	return self.activationFunction(table.unpack(valueArray))
 	
