@@ -91,6 +91,7 @@ function OrdinalGene:mutate(forceMutate)
 	local randomPoint = mathRandom() * totalWeight
 
 	local neighbourIndexArray = {}
+	
 	local neighbourWeightArray = {}
 
 	if (arrayIndex > 1) then
@@ -135,6 +136,12 @@ function OrdinalGene:mutate(forceMutate)
 		
 	end
 	
+end
+
+function OrdinalGene:__tostring()
+
+	return tostring(self.value)
+
 end
 
 return OrdinalGene
