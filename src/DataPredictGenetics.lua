@@ -42,4 +42,6 @@ AqwamGeneticEvolutionLibrary.Genes = {
 	
 }
 
+AqwamGeneticEvolutionLibrary.Chromosome = require(script.Chromosome)
+
 return AqwamGeneticEvolutionLibrary
