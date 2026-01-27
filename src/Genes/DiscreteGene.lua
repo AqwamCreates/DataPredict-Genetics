@@ -90,4 +90,10 @@ function DiscreteGene:mutate(forceMutate)
 
 end
 
+function DiscreteGene:__tostring()
+
+	return tostring(self.value)
+
+end
+
 return DiscreteGene
