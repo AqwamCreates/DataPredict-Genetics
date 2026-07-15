@@ -54,7 +54,7 @@ function LocalOrdinalGene.new(parameterDictionary)
 	
 	local NewLocalOrdinalGene = BaseGene.new(parameterDictionary)
 	
-	local NewLocalOrdinalGene = setmetatable(NewLocalOrdinalGene, LocalOrdinalGene)
+	setmetatable(NewLocalOrdinalGene, LocalOrdinalGene)
 
 	NewLocalOrdinalGene.mutationChoiceArray = mutationChoiceArray
 
