@@ -30,6 +30,8 @@ local AqwamGeneticEvolutionLibrary = {}
 
 local Genes = script.Genes
 
+local Selectors = script.Selectors
+
 AqwamGeneticEvolutionLibrary.Genes = {
 	
 	ContinuousGene = require(Genes.ContinuousGene),
@@ -42,8 +44,16 @@ AqwamGeneticEvolutionLibrary.Genes = {
 	
 }
 
+AqwamGeneticEvolutionLibrary.Selectors = {
+	
+	RouletteWheel = require(Selectors.RouletteWheel),
+	
+	Tournament = require(Selectors.Tournament),
+	
+}
+
 AqwamGeneticEvolutionLibrary.Chromosome = require(script.Chromosome)
 
-AqwamGeneticEvolutionLibrary.Cell = require(script.Cell)
+AqwamGeneticEvolutionLibrary.PetriDish = require(script.PetriDish)
 
 return AqwamGeneticEvolutionLibrary
