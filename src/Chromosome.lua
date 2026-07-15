@@ -140,7 +140,9 @@ function Chromosome:crossover(OtherChromosome, exchangeRate)
 			
 			local clonedGeneValue = ClonedGene.value
 			
-			ClonedGene.value = ClonedOtherGene.value
+			local clonedOtherGeneValue = ClonedOtherGene.value
+			
+			ClonedGene.value = clonedOtherGeneValue
 			
 			ClonedOtherGene.value = clonedGeneValue
 			
