@@ -1,6 +1,6 @@
-# DataPredict™ Genetics
+# DataPredict™ Zero
 
-![DataPredict Evolution Icon](icons/DataPredictEvolutionIcon.png)
+![DataPredict Evolution Icon](icons/DataPredictZeronIcon.png)
 
 --------------------------------------------------------------------
 
@@ -14,7 +14,7 @@
 
 --------------------------------------------------------------------
 
-Aqwam's Evolution Library (Aqwam-EL)
+Aqwam's Derivative-Free Optimization Library (Aqwam-DFOL)
 
 Author: Aqwam Harish Aiman
 	
@@ -26,7 +26,7 @@ YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 --------------------------------------------------------------------
 
-View the documentation here: https://aqwamcreates.github.io/DataPredict/
+View the documentation here: https://aqwamcreates.github.io/DataPredict-Zero/
 
 By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](docs/TermsAndConditions.md).
 
