@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamGeneticEvolutionLibrary = {}
+local AqwamEvolutionLibrary = {}
 
 local Genetic = script.Genetic
 
@@ -34,7 +34,7 @@ local Genes = Genetic.Genes
 
 local Selectors = Genetic.Selectors
 
-AqwamGeneticEvolutionLibrary.Genetic = {
+AqwamEvolutionLibrary.Genetic = {
 
 	Genes = {
 
@@ -66,4 +66,4 @@ AqwamGeneticEvolutionLibrary.Genetic = {
 
 }
 
-return AqwamGeneticEvolutionLibrary
+return AqwamEvolutionLibrary
