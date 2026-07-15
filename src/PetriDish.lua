@@ -110,7 +110,7 @@ function PetriDish:cultivate(ChromosomeArray, scoreArray)
 		
 	end
 	
-	local remainingPopulationCount = populationCount - numberOfElites
+	local remainingPopulationCountToAdd = populationCount - numberOfElites
 	
 	repeat
 		
@@ -120,7 +120,7 @@ function PetriDish:cultivate(ChromosomeArray, scoreArray)
 
 		local ChildA, ChildB = ParentChromosomeA:crossover(ParentChromosomeB, crossoverRate)
 		
-		if (remainingPopulationCount >= 2) then
+		if (remainingPopulationCountToAdd >= 2) then
 			
 			ChildA:mutate(true)
 			
@@ -130,7 +130,7 @@ function PetriDish:cultivate(ChromosomeArray, scoreArray)
 			
 			tableInsert(NewChromosomeArray, ChildB)
 			
-			remainingPopulationCount = remainingPopulationCount - 2
+			remainingPopulationCountToAdd = remainingPopulationCountToAdd - 2
 			
 		else
 			
@@ -144,11 +144,11 @@ function PetriDish:cultivate(ChromosomeArray, scoreArray)
 			
 			tableInsert(NewChromosomeArray, SelectedChild)
 			
-			remainingPopulationCount = remainingPopulationCount - 1
+			remainingPopulationCountToAdd = remainingPopulationCountToAdd - 1
 			
 		end
 		
-	until (remainingPopulationCount <= 0)
+	until (remainingPopulationCountToAdd <= 0)
 
 	return NewChromosomeArray
 	
