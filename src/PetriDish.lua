@@ -1,0 +1,149 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Genetic Evolution Library (DataPredict Genetics)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict-Genetics/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
+local tableInsert = table.insert
+
+local tableSort = table.sort
+
+local mathMinimum = math.min
+
+local PetriDish = {}
+
+PetriDish.__index = PetriDish
+
+function PetriDish.new(parameterDictionary)
+
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewPetriDish = {}
+
+	setmetatable(NewPetriDish, PetriDish)
+	
+	NewPetriDish.populationCount = parameterDictionary.populationCount or 10
+
+	NewPetriDish.eliteCount = parameterDictionary.eliteCount or 1
+	
+	NewPetriDish.crossoverRate = parameterDictionary.crossoverRate or 0.5
+	
+	NewPetriDish.Selector = parameterDictionary.Selector 
+	
+	NewPetriDish.reuseElites = parameterDictionary.reuseElites or false
+
+	return NewPetriDish
+
+end
+
+function PetriDish:cultivate(ChromosomeArray, scoreArray)
+	
+	local numberOfChromosomes = #ChromosomeArray
+	
+	local numberOfScores = #scoreArray
+		
+	if (numberOfChromosomes ~= numberOfScores) then error("You have " .. numberOfChromosomes .. " Chromosome(s), but you have " .. numberOfScores .. " score(s).") end
+	
+	local populationCount = self.populationCount
+	
+	local eliteCount = self.eliteCount
+	
+	local crossoverRate = self.crossoverRate
+	
+	local Selector = self.Selector
+	
+	local reuseElites = self.reuseElites
+
+	local ChromosomeAndScoreDictionaryDictionary = {}
+	
+	for ChromosomeIndex, Chromosome in ipairs(ChromosomeArray) do 
+		
+		local ChromosomeAndScoreDictionary = {Chromosome = Chromosome, score = scoreArray[ChromosomeIndex]}
+		
+		tableInsert(ChromosomeAndScoreDictionaryDictionary, ChromosomeAndScoreDictionary) 
+		
+	end
+
+	tableSort(ChromosomeAndScoreDictionaryDictionary, function(a, b) return a.score > b.score end)
+
+	local numberOfElites = mathMinimum(eliteCount, numberOfChromosomes)
+	
+	local NewChromosomeArray = {}
+	
+	for ChromosomeIndex = 1, numberOfElites, 1 do
+		
+		local ChromosomeAndScoreDictionary = ChromosomeAndScoreDictionaryDictionary[ChromosomeIndex]
+		
+		local Chromosome = ChromosomeAndScoreDictionary.Chromosome
+		
+		if (not reuseElites) then Chromosome = Chromosome:clone() end
+		
+		tableInsert(NewChromosomeArray, Chromosome)
+		
+	end
+	
+	local newPopulationCount = populationCount - numberOfElites
+	
+	repeat
+		
+		local ParentChromosomeA = Selector:select(ChromosomeAndScoreDictionaryDictionary)
+
+		local ParentChromosomeB = Selector:select(ChromosomeAndScoreDictionaryDictionary)
+
+		local ChildA, ChildB = ParentChromosomeA:crossover(ParentChromosomeB, crossoverRate)
+
+		ChildA:mutate(true)
+
+		tableInsert(NewChromosomeArray, ChildA)
+		
+		newPopulationCount = newPopulationCount + 1
+
+		if (newPopulationCount < populationCount) then
+
+			ChildB:mutate(true)
+
+			tableInsert(NewChromosomeArray, ChildB)
+			
+			newPopulationCount = newPopulationCount + 1
+
+		end
+		
+	until (newPopulationCount >= populationCount)
+
+	return NewChromosomeArray
+	
+end
+
+function PetriDish:destroy()
+
+	table.clear(self)
+
+	setmetatable(self, nil)
+
+	self = nil
+
+end
+
+return PetriDish
