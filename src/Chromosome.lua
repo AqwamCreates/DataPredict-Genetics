@@ -26,135 +26,155 @@
 
 --]]
 
-local Selectors = require(script.Parent.Selectors)
-
-local tableInsert = table.insert
-
-local tableSort = table.sort
-
 local mathRandom = math.random
 
-local mathMinimum = math.min
+local Chromosome = {}
 
-local PetriDish = {}
+Chromosome.__index = Chromosome
 
-PetriDish.__index = PetriDish
+local function defaultActivationFunction(valueArray, environmentArray)
 
-function PetriDish.new(parameterDictionary)
+	local activationValue = 0
+
+	for i, value in ipairs(valueArray) do 
+
+		local environmentValue = environmentArray[i]
+
+		activationValue = activationValue + (value * environmentValue)
+
+	end
+
+	return activationValue
+
+end
+
+local function deepCopyValue(original, copies)
+
+	copies = copies or {}
+
+	local originalType = type(original)
+
+	local copy
+
+	if (originalType == 'table') then
+
+		if copies[original] then
+
+			copy = copies[original]
+
+		else
+
+			copy = {}
+
+			copies[original] = copy
+
+			for originalKey, originalValue in next, original, nil do
+
+				copy[deepCopyValue(originalKey, copies)] = deepCopyValue(originalValue, copies)
+
+			end
+
+			setmetatable(copy, deepCopyValue(getmetatable(original), copies))
+
+		end
+
+	else
+
+		copy = original
+
+	end
+
+	return copy
+
+end
+
+function Chromosome.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewPetriDish = {}
+	local NewChromosome = {}
 
-	setmetatable(NewPetriDish, PetriDish)
-	
-	NewPetriDish.populationCount = parameterDictionary.populationCount or 10
+	setmetatable(NewChromosome, Chromosome)
 
-	NewPetriDish.eliteCount = parameterDictionary.eliteCount or 1
+	NewChromosome.geneArray = parameterDictionary.geneArray or {}
 	
-	NewPetriDish.crossoverRate = parameterDictionary.crossoverRate or 0.5
+	NewChromosome.mutationChance = parameterDictionary.mutationChance or 0
 	
-	NewPetriDish.Selector = parameterDictionary.Selector or Selectors.TournamentSelector.new()
-	
-	NewPetriDish.reuseElites = parameterDictionary.reuseElites or false
+	NewChromosome.activationFunction = parameterDictionary.activationFunction or defaultActivationFunction
 
-	return NewPetriDish
+	return NewChromosome
 
 end
 
-function PetriDish:cultivate(ChromosomeArray, scoreArray)
+function Chromosome:mutate(forceMutateChromosome, forceMutateGene)
 	
-	local numberOfChromosomes = #ChromosomeArray
+	if (not forceMutateChromosome) and (self.mutationChance <= mathRandom()) then return end
 	
-	local numberOfScores = #scoreArray
-		
-	if (numberOfChromosomes ~= numberOfScores) then error("You have " .. numberOfChromosomes .. " Chromosome(s), but you have " .. numberOfScores .. " score(s).") end
+	for i, Gene in ipairs(self.geneArray) do Gene:mutate(forceMutateGene) end
 	
-	local populationCount = self.populationCount
-	
-	local eliteCount = self.eliteCount
-	
-	local crossoverRate = self.crossoverRate
-	
-	local Selector = self.Selector
-	
-	local reuseElites = self.reuseElites
+end
 
-	local ChromosomeAndScoreDictionaryArray = {}
+function Chromosome:activate(environmentArray)
 	
-	for ChromosomeIndex, Chromosome in ipairs(ChromosomeArray) do
-		
-		local score = scoreArray[ChromosomeIndex]
-		
-		local ChromosomeAndScoreDictionary = {Chromosome = Chromosome, score = score}
-		
-		tableInsert(ChromosomeAndScoreDictionaryArray, ChromosomeAndScoreDictionary) 
-		
-	end
+	local valueArray = {}
+	
+	for i, Gene in ipairs(self.geneArray) do valueArray[i] = Gene.value end
+	
+	return self.activationFunction(valueArray, environmentArray)
+	
+end
 
-	tableSort(ChromosomeAndScoreDictionaryArray, function(a, b) return a.score > b.score end)
+function Chromosome:clone()
 
-	local numberOfElites = mathMinimum(eliteCount, numberOfChromosomes)
-	
-	local NewChromosomeArray = {}
-	
-	for ChromosomeIndex = 1, numberOfElites, 1 do
-		
-		local ChromosomeAndScoreDictionary = ChromosomeAndScoreDictionaryArray[ChromosomeIndex]
-		
-		local Chromosome = ChromosomeAndScoreDictionary.Chromosome
-		
-		if (not reuseElites) then Chromosome = Chromosome:clone() end
-		
-		tableInsert(NewChromosomeArray, Chromosome)
-		
-	end
-	
-	local remainingPopulationCountToAdd = populationCount - numberOfElites
-	
-	repeat
-		
-		local ParentChromosomeA = Selector:select(ChromosomeAndScoreDictionaryArray)
+	return deepCopyValue(self)
 
-		local ParentChromosomeB = Selector:select(ChromosomeAndScoreDictionaryArray)
+end
 
-		local ChildA, ChildB = ParentChromosomeA:crossover(ParentChromosomeB, crossoverRate)
+function Chromosome:crossover(OtherChromosome, crossoverRate)
+	
+	local ClonedChromosome = self:clone()
+	
+	local ClonedOtherChromosome = OtherChromosome:clone()
+	
+	for geneIndex, ClonedGene in ipairs(ClonedChromosome.geneArray) do
 		
-		if (remainingPopulationCountToAdd >= 2) then
+		if (mathRandom() < crossoverRate) then
 			
-			ChildA:mutate(true)
+			local ClonedOtherGene = ClonedOtherChromosome.geneArray[geneIndex]
 			
-			ChildB:mutate(true)
+			local clonedGeneValue = ClonedGene.value
 			
-			tableInsert(NewChromosomeArray, ChildA)
+			local clonedOtherGeneValue = ClonedOtherGene.value
 			
-			tableInsert(NewChromosomeArray, ChildB)
+			ClonedGene.value = clonedOtherGeneValue
 			
-			remainingPopulationCountToAdd = remainingPopulationCountToAdd - 2
-			
-		else
-			
-			local randomNumber = mathRandom()
-			
-			local selectChildA = (randomNumber <= 0.5)
-			
-			local SelectedChild = (selectChildA and ChildA) or ChildB
-			
-			SelectedChild:mutate(true)
-			
-			tableInsert(NewChromosomeArray, SelectedChild)
-			
-			remainingPopulationCountToAdd = remainingPopulationCountToAdd - 1
+			ClonedOtherGene.value = clonedGeneValue
 			
 		end
 		
-	until (remainingPopulationCountToAdd <= 0)
-
-	return NewChromosomeArray
+	end
+	
+	return ClonedChromosome, ClonedOtherChromosome
 	
 end
 
-function PetriDish:destroy()
+function Chromosome:__tostring()
+	
+	local stringText = "{"
+	
+	local geneArray = self.geneArray
+	
+	local numberOfGenes = #geneArray
+	
+	for i, Gene in ipairs(geneArray) do stringText = stringText .. Gene .. (i < numberOfGenes and " " or "") end
+	
+	stringText = stringText .. "}"
+	
+	return stringText
+	
+end
+
+function Chromosome:destroy()
 
 	table.clear(self)
 
@@ -163,5 +183,5 @@ function PetriDish:destroy()
 	self = nil
 
 end
-
-return PetriDish
+	
+return Chromosome
