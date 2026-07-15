@@ -40,17 +40,17 @@ function GlobalOrdinalGene.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local value = parameterDictionary.value or parameterDictionary[1] or 0
+	local value = parameterDictionary.value or 0
 
-	local mutationChance = parameterDictionary.mutationChance or parameterDictionary[2] or 0
+	local mutationChance = parameterDictionary.mutationChance or 0
 
-	local mutationChoiceArray =  parameterDictionary.mutationChoiceArray or parameterDictionary[3] or {value}
+	local mutationChoiceArray =  parameterDictionary.mutationChoiceArray or {value}
 
 	local numberOfMutationChoices = #mutationChoiceArray
 
-	local mutationWeightArray = parameterDictionary.mutationWeightArray or parameterDictionary[4] or table.create(numberOfMutationChoices, 1)
+	local mutationWeightArray = parameterDictionary.mutationWeightArray or table.create(numberOfMutationChoices, 1)
 	
-	local indexChange = parameterDictionary.indexChange or parameterDictionary[5] or 1
+	local indexChange = parameterDictionary.indexChange or 1
 	
 	parameterDictionary.type = "GlobalOrdinal"
 	
