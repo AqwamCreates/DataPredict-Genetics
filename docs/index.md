@@ -2,8 +2,6 @@
 
 ## Commercial Use Information
 
-* [How Does DataPredict Reduce Costs For In-Game Machine Learning?](https://github.com/AqwamCreates/DataPredict/blob/main/docs/CostReductionInformation.md)
-
 * [Commercial Use Licensing](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md)
 
 ## Terms And Conditions Information
