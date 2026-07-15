@@ -36,6 +36,8 @@ local RouletteWheelSelector = {}
 
 RouletteWheelSelector.__index = RouletteWheelSelector
 
+setmetatable(RouletteWheelSelector, BaseSelector)
+
 function RouletteWheelSelector.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -43,6 +45,8 @@ function RouletteWheelSelector.new(parameterDictionary)
 	parameterDictionary.type = "RouletteWheel"
 	
 	local NewRouletteWheelSelector = BaseSelector.new(parameterDictionary)
+	
+	setmetatable(NewRouletteWheelSelector, RouletteWheelSelector)
 	
 	return NewRouletteWheelSelector
 	
