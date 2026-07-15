@@ -26,15 +26,19 @@
 
 --]]
 
+local BaseGene = require(script.Parent.BaseGene)
+
 local mathRandom = math.random
 
 local DiscreteGene = {}
 
+DiscreteGene.__index = DiscreteGene
+
+setmetatable(DiscreteGene, BaseGene)
+
 function DiscreteGene.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
-
-	local self = setmetatable({}, DiscreteGene)
 
 	local value = parameterDictionary.value or parameterDictionary[1] or 0
 	
@@ -45,16 +49,18 @@ function DiscreteGene.new(parameterDictionary)
 	local numberOfMutationChoices = #mutationChoiceArray
 	
 	local mutationWeightArray = parameterDictionary.mutationWeightArray or parameterDictionary[4] or table.create(numberOfMutationChoices, 1)
+	
+	parameterDictionary.type = "Discrete"
 
-	self.value = value
+	local NewDiscreteGene = BaseGene.new(parameterDictionary)
 
-	self.mutationChance = mutationChance
+	setmetatable(NewDiscreteGene, DiscreteGene)
 
-	self.mutationChoiceArray = mutationChoiceArray
+	NewDiscreteGene.mutationChoiceArray = mutationChoiceArray
 
-	self.mutationWeightArray = mutationWeightArray
+	NewDiscreteGene.mutationWeightArray = mutationWeightArray
 
-	return self
+	return NewDiscreteGene
 
 end
 
@@ -87,12 +93,6 @@ function DiscreteGene:mutate(forceMutate)
 		end
 
 	end
-
-end
-
-function DiscreteGene:__tostring()
-
-	return tostring(self.value)
 
 end
 
