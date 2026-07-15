@@ -16,7 +16,7 @@
 
 * For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md) and [Terms And Conditions Enforcement Information](TermsAndConditionsEnforcementInformation.md).
 
-![DataPredictZeroIconSmall](https://github.com/user-attachments/assets/06f4816e-28c0-4202-a2cf-84420ddb3387)
+![DataPredict Zero Icon](https://github.com/user-attachments/assets/6af7f6db-a645-478f-be37-71f77ccb4f2a)
 
 | Version | Current Version Number |
 |---------|------------------------|
