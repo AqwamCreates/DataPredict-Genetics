@@ -80,7 +80,7 @@ function PetriDish:cultivate(ChromosomeArray, scoreArray)
 	
 	local reuseElites = self.reuseElites
 
-	local ChromosomeAndScoreDictionaryDictionary = {}
+	local ChromosomeAndScoreDictionaryArray = {}
 	
 	for ChromosomeIndex, Chromosome in ipairs(ChromosomeArray) do
 		
@@ -88,11 +88,11 @@ function PetriDish:cultivate(ChromosomeArray, scoreArray)
 		
 		local ChromosomeAndScoreDictionary = {Chromosome = Chromosome, score = score}
 		
-		tableInsert(ChromosomeAndScoreDictionaryDictionary, ChromosomeAndScoreDictionary) 
+		tableInsert(ChromosomeAndScoreDictionaryArray, ChromosomeAndScoreDictionary) 
 		
 	end
 
-	tableSort(ChromosomeAndScoreDictionaryDictionary, function(a, b) return a.score > b.score end)
+	tableSort(ChromosomeAndScoreDictionaryArray, function(a, b) return a.score > b.score end)
 
 	local numberOfElites = mathMinimum(eliteCount, numberOfChromosomes)
 	
@@ -100,7 +100,7 @@ function PetriDish:cultivate(ChromosomeArray, scoreArray)
 	
 	for ChromosomeIndex = 1, numberOfElites, 1 do
 		
-		local ChromosomeAndScoreDictionary = ChromosomeAndScoreDictionaryDictionary[ChromosomeIndex]
+		local ChromosomeAndScoreDictionary = ChromosomeAndScoreDictionaryArray[ChromosomeIndex]
 		
 		local Chromosome = ChromosomeAndScoreDictionary.Chromosome
 		
@@ -114,9 +114,9 @@ function PetriDish:cultivate(ChromosomeArray, scoreArray)
 	
 	repeat
 		
-		local ParentChromosomeA = Selector:select(ChromosomeAndScoreDictionaryDictionary)
+		local ParentChromosomeA = Selector:select(ChromosomeAndScoreDictionaryArray)
 
-		local ParentChromosomeB = Selector:select(ChromosomeAndScoreDictionaryDictionary)
+		local ParentChromosomeB = Selector:select(ChromosomeAndScoreDictionaryArray)
 
 		local ChildA, ChildB = ParentChromosomeA:crossover(ParentChromosomeB, crossoverRate)
 		
