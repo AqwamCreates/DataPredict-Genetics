@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Genetics/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict-Evolution/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -26,54 +26,42 @@
 
 --]]
 
-local BaseGene = require(script.Parent.BaseGene)
+local BaseGene = {}
 
-local mathRandom = math.random
+BaseGene.__index = BaseGene
 
-local mathSqrt = math.sqrt
-
-local mathLog = math.log
-
-local mathCos = math.cos
-
-local mathPi = math.pi
-
-local ContinuousGene = {}
-
-ContinuousGene.__index = ContinuousGene
-
-setmetatable(ContinuousGene, BaseGene)
-
-function ContinuousGene.new(parameterDictionary)
+function BaseGene.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
-
-	local value = parameterDictionary.value or 0
 	
-	local mutationChance = parameterDictionary.mutationChance or 0
-	
-	local mutationStandardDeviation = parameterDictionary.mutationStandardDeviation or 1
-	
-	parameterDictionary.type = "Continuous"
-	
-	local NewContinuousGene = BaseGene.new(parameterDictionary)
+	local NewBaseGene = {}
 
-	setmetatable(NewContinuousGene, ContinuousGene)
+	setmetatable(NewBaseGene, BaseGene)
 
-	NewContinuousGene.mutationStandardDeviation = mutationStandardDeviation
+	NewBaseGene.value = parameterDictionary.value or 0
+	
+	NewBaseGene.type = parameterDictionary.type or "Base"
 
-	return NewContinuousGene
+	NewBaseGene.mutationChance = parameterDictionary.mutationChance or 0
+
+	return NewBaseGene
 
 end
 
-function ContinuousGene:mutate(forceMutate)
+function BaseGene:__tostring()
 	
-	if (not forceMutate) and (self.mutationChance <= mathRandom()) then return end
-		
-	local mutationValue = self.mutationStandardDeviation * mathSqrt(-2 * mathLog(mathRandom())) * mathCos(2 * mathPi * mathRandom())
-
-	self.value = self.value + mutationValue
-
+	return tostring("Type: " .. self.type .. " Value: " .. self.value)
+	
 end
 
-return ContinuousGene
+function BaseGene:destroy()
+	
+	table.clear(self)
+	
+	setmetatable(self, nil)
+	
+	self = nil
+	
+end
+
+return BaseGene
