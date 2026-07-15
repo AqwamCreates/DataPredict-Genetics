@@ -32,6 +32,8 @@ local tableInsert = table.insert
 
 local tableSort = table.sort
 
+local mathRandom = math.random
+
 local mathMinimum = math.min
 
 local PetriDish = {}
@@ -106,7 +108,7 @@ function PetriDish:cultivate(ChromosomeArray, scoreArray)
 		
 	end
 	
-	local newPopulationCount = populationCount - numberOfElites
+	local remainingPopulationCount = populationCount - numberOfElites
 	
 	repeat
 		
@@ -115,24 +117,36 @@ function PetriDish:cultivate(ChromosomeArray, scoreArray)
 		local ParentChromosomeB = Selector:select(ChromosomeAndScoreDictionaryDictionary)
 
 		local ChildA, ChildB = ParentChromosomeA:crossover(ParentChromosomeB, crossoverRate)
-
-		ChildA:mutate(true)
-
-		tableInsert(NewChromosomeArray, ChildA)
 		
-		newPopulationCount = newPopulationCount + 1
-
-		if (newPopulationCount < populationCount) then
-
+		if (remainingPopulationCount >= 2) then
+			
+			ChildA:mutate(true)
+			
 			ChildB:mutate(true)
-
+			
+			tableInsert(NewChromosomeArray, ChildA)
+			
 			tableInsert(NewChromosomeArray, ChildB)
 			
-			newPopulationCount = newPopulationCount + 1
-
+			remainingPopulationCount = remainingPopulationCount - 2
+			
+		else
+			
+			local randomNumber = mathRandom()
+			
+			local selectChildA = (randomNumber <= 0.5)
+			
+			local SelectedChild = (selectChildA and ChildA) or ChildB
+			
+			SelectedChild:mutate(true)
+			
+			tableInsert(NewChromosomeArray, SelectedChild)
+			
+			remainingPopulationCount = remainingPopulationCount - 1
+			
 		end
 		
-	until (newPopulationCount >= populationCount)
+	until (remainingPopulationCount <= 0)
 
 	return NewChromosomeArray
 	
