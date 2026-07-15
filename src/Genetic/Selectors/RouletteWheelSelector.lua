@@ -58,8 +58,6 @@ function RouletteWheelSelector:select(ChromosomeAndScoreDictionaryArray)
 	
 	local minimumScore = math.huge
 	
-	local totalFitness = 0
-	
 	for arrayIndex, ChromosomeAndScoreDictionary in ipairs(ChromosomeAndScoreDictionaryArray) do
 		
 		local score = ChromosomeAndScoreDictionary.score
