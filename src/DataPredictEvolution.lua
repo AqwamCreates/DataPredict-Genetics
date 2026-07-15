@@ -50,9 +50,13 @@ AqwamGeneticEvolutionLibrary.Genetic = {
 	
 	Selectors = {
 		
+		RandomSelector = require(Selectors.RandomSelector),
+		
 		TournamentSelector = require(Selectors.TournamentSelector),
 		
-		RouletteWheel = require(Selectors.RouletteWheel),
+		RankSelector = require(Selectors.RankSelector),
+		
+		RouletteWheelSelector = require(Selectors.RouletteWheelSelector),
 		
 	},
 	
