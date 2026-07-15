@@ -126,10 +126,4 @@ function GlobalOrdinalGene:mutate(forceMutate)
 	
 end
 
-function GlobalOrdinalGene:__tostring()
-
-	return tostring("Global Ordinal Gene Value: " ... self.value)
-
-end
-
 return GlobalOrdinalGene
