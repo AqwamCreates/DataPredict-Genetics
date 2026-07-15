@@ -134,10 +134,4 @@ function LocalOrdinalGene:mutate(forceMutate)
 	
 end
 
-function LocalOrdinalGene:__tostring()
-
-	return tostring("Local Ordinal Gene Value: " ... self.value)
-
-end
-
 return LocalOrdinalGene
