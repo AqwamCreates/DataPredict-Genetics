@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Evolution Library (DataPredict Evolution)
+	Aqwam's Derivative-Free Optimization Library (DataPredict Zero)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Evolution/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict-Zero/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -30,7 +30,7 @@ local BaseSelector = require(script.Parent.BaseSelector)
 
 local mathRandom = math.random
 
-local mathAbs = math.abs
+local mathAbsolute = math.abs
 
 local RouletteWheelSelector = {}
 
@@ -68,7 +68,7 @@ function RouletteWheelSelector:select(ChromosomeAndScoreDictionaryArray)
 
 	local offset = 0
 	
-	if (minimumScore < 0) then offset = mathAbs(minimumScore) end
+	if (minimumScore < 0) then offset = mathAbsolute(minimumScore) end
 
 	local totalFitness = 0
 	
