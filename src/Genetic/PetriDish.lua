@@ -68,7 +68,7 @@ function PetriDish:cultivate(ChromosomeArray, scoreArray)
 	
 	local numberOfScores = #scoreArray
 		
-	if (numberOfChromosomes ~= numberOfScores) then error("You have " .. numberOfChromosomes .. " Chromosome(s), but you have " .. numberOfScores .. " score(s).") end
+	if (numberOfChromosomes ~= numberOfScores) then error("You have " .. numberOfChromosomes .. " chromosome(s), but you have " .. numberOfScores .. " score(s).") end
 	
 	local populationCount = self.populationCount
 	
