@@ -38,6 +38,8 @@ local Selectors = Genetic.Selectors
 
 local SimulatedAnnealing = script.SimulatedAnnealing
 
+local ParticleSwarm = script.ParticleSwarm
+
 AqwamDerivativeFreeOptimizationLibrary.Core = {
 	
 	Genes = {
@@ -78,6 +80,12 @@ AqwamDerivativeFreeOptimizationLibrary.SimulatedAnnealing = {
 	
 	Annealer = require(SimulatedAnnealing.Annealer),
 	
+}
+
+AqwamDerivativeFreeOptimizationLibrary.ParticleSwarm = {
+
+	SchrodingerBox = require(ParticleSwarm.SchrodingerBox),
+
 }
 
 return AqwamDerivativeFreeOptimizationLibrary
