@@ -32,6 +32,8 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 ## Tutorials
 
+* [Installation For Roblox](InstallationForRoblox.md)
+
 ## Links
 
 ### Repository
