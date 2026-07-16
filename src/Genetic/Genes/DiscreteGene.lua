@@ -132,21 +132,21 @@ local mutationModeFunctionList = {
 		
 		table.insert(neighbourWeightArray, mutationWeightArray[nextArrayIndex])
 
-		local totalWeight = 0
+		local totalNeighbourWeight = 0
 		
-		for _, weight in ipairs(neighbourWeightArray) do totalWeight = totalWeight + weight end
+		for _, neighbourWeight in ipairs(neighbourWeightArray) do totalNeighbourWeight = totalNeighbourWeight + neighbourWeight end
 
-		if (totalWeight == 0) then return neighbourIndexArray[mathRandom(#neighbourIndexArray)] end
+		if (totalNeighbourWeight == 0) then return neighbourIndexArray[mathRandom(#neighbourIndexArray)] end
 
-		local randomPoint = mathRandom() * totalWeight
+		local randomPoint = mathRandom() * totalNeighbourWeight
 		
-		local accumulatedWeight = 0
+		local accumulatedNeighbourWeight = 0
 
-		for neighbourIndex, weight in ipairs(neighbourWeightArray) do
+		for neighbourIndex, neighbourWeight in ipairs(neighbourWeightArray) do
 			
-			accumulatedWeight = accumulatedWeight + weight
+			accumulatedNeighbourWeight = accumulatedNeighbourWeight + neighbourWeight
 			
-			if (randomPoint <= accumulatedWeight) then return neighbourIndexArray[neighbourIndex] end
+			if (randomPoint <= accumulatedNeighbourWeight) then return neighbourIndexArray[neighbourIndex] end
 			
 		end
 		
