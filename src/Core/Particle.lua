@@ -204,11 +204,27 @@ function Particle:record(score)
 	
 end
 
+function Particle:setPositionArray(positionArray, doNotDeepCopy)
+	
+	positionArray = (doNotDeepCopy and positionArray) or deepCopyValue(positionArray)
+	
+	self.positionArray = positionArray
+	
+end
+
 function Particle:getPositionArray(doNotDeepCopy)
 	
 	if (doNotDeepCopy) then return self.positionArray end
 	
 	return deepCopyValue(self.positionArray)
+	
+end
+
+function Particle:setVelocityArray(velocityArray, doNotDeepCopy)
+	
+	velocityArray = (doNotDeepCopy and velocityArray) or deepCopyValue(velocityArray)
+	
+	self.velocityArray = velocityArray
 	
 end
 
@@ -220,12 +236,26 @@ function Particle:getVelocityArray(doNotDeepCopy)
 	
 end
 
+function Particle:setBestPositionArray(bestPositionArray, doNotDeepCopy)
+	
+	bestPositionArray = (doNotDeepCopy and bestPositionArray) or deepCopyValue(bestPositionArray)
+	
+	self.bestPositionArray = bestPositionArray
+	
+end
+
 function Particle:getBestPositionArray(doNotDeepCopy)
 
 	if (doNotDeepCopy) then return self.bestPositionArray end
 
 	return deepCopyValue(self.bestPositionArray)
 
+end
+
+function Particle:setBestScore(bestScore)
+	
+	self.bestScore = bestScore
+	
 end
 
 function Particle:getBestScore()
