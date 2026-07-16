@@ -59,6 +59,8 @@ local mutationModeFunctionList = {
 			if (randomPoint <= accumulatedWeight) then return currentArrayIndex end
 
 		end
+		
+		return (#mutationWeightArray)
 
 	end,
 	
@@ -108,51 +110,49 @@ local mutationModeFunctionList = {
 		
 		local numberOfMutationWeights = #mutationWeightArray
 
-		local arrayIndexMinusOne = arrayIndex - 1
+		local previousArrayIndex = arrayIndex - stepSize
+		
+		if (previousArrayIndex <= 0) then previousArrayIndex = numberOfMutationWeights + previousArrayIndex end
 
-		local arrayIndexPlusOne = arrayIndex + 1
+		local nextArrayIndex = arrayIndex + stepSize
+		
+		if (nextArrayIndex > numberOfMutationWeights) then nextArrayIndex = nextArrayIndex - numberOfMutationWeights end
 
 		local neighbourIndexArray = {}
-
+		
 		local neighbourWeightArray = {}
 
-		if (arrayIndex > 1) then
-
-			table.insert(neighbourIndexArray, arrayIndexMinusOne)
-
-			table.insert(neighbourWeightArray, mutationWeightArray[arrayIndexMinusOne])
-
-		end
+		table.insert(neighbourIndexArray, previousArrayIndex)
+		
+		table.insert(neighbourWeightArray, mutationWeightArray[previousArrayIndex])
 
 		table.insert(neighbourIndexArray, arrayIndex)
-
+		
 		table.insert(neighbourWeightArray, mutationWeightArray[arrayIndex])
 
-		if (arrayIndex < numberOfMutationWeights) then
-
-			table.insert(neighbourIndexArray, arrayIndexPlusOne)
-
-			table.insert(neighbourWeightArray, mutationWeightArray[arrayIndexPlusOne])
-
-		end
-
-		local totalWeight = 0
-
-		for _, weight in ipairs(neighbourWeightArray) do totalWeight = totalWeight + weight end
+		table.insert(neighbourIndexArray, nextArrayIndex)
 		
-		if (totalWeight == 0) then return mathRandom(#neighbourWeightArray) end
+		table.insert(neighbourWeightArray, mutationWeightArray[nextArrayIndex])
 
-		local randomPoint = mathRandom() * totalWeight
+		local totalNeighbourWeight = 0
+		
+		for _, neighbourWeight in ipairs(neighbourWeightArray) do totalNeighbourWeight = totalNeighbourWeight + neighbourWeight end
 
-		local accumulatedWeight = 0
+		if (totalNeighbourWeight == 0) then return neighbourIndexArray[mathRandom(#neighbourIndexArray)] end
 
-		for i, weight in ipairs(neighbourWeightArray) do
+		local randomPoint = mathRandom() * totalNeighbourWeight
+		
+		local accumulatedNeighbourWeight = 0
 
-			accumulatedWeight = accumulatedWeight + weight
-
-			if (randomPoint <= accumulatedWeight) then return neighbourIndexArray[i] end
-
+		for neighbourIndex, neighbourWeight in ipairs(neighbourWeightArray) do
+			
+			accumulatedNeighbourWeight = accumulatedNeighbourWeight + neighbourWeight
+			
+			if (randomPoint <= accumulatedNeighbourWeight) then return neighbourIndexArray[neighbourIndex] end
+			
 		end
+		
+		return neighbourIndexArray[#neighbourIndexArray]
 		
 	end,
 	
