@@ -142,11 +142,11 @@ local mutationModeFunctionList = {
 		
 		local accumulatedWeight = 0
 
-		for i, weight in ipairs(neighbourWeightArray) do
+		for neighbourIndex, weight in ipairs(neighbourWeightArray) do
 			
 			accumulatedWeight = accumulatedWeight + weight
 			
-			if (randomPoint <= accumulatedWeight) then return neighbourIndexArray[i] end
+			if (randomPoint <= accumulatedWeight) then return neighbourIndexArray[neighbourIndex] end
 			
 		end
 		
