@@ -82,11 +82,17 @@ function Particle.new(parameterDictionary)
 	
 	local dimensionSize = parameterDictionary.dimensionSize or 1
 	
-	local positionArray = tableClone(parameterDictionary.positionArray) or {}
+	local positionArray = parameterDictionary.positionArray or {}
 	
-	local velocityArray = tableClone(parameterDictionary.velocityArray) or {}
+	positionArray = tableClone(positionArray)
 	
-	local bestPositionArray = tableClone(parameterDictionary.bestPositionArray) or {}
+	local velocityArray = parameterDictionary.velocityArray or {}
+	
+	velocityArray = tableClone(velocityArray)
+	
+	local bestPositionArray = parameterDictionary.bestPositionArray or {}
+	
+	bestPositionArray = tableClone(bestPositionArray)
 	
 	local bestScore = parameterDictionary.bestScore or -mathHuge
 	
