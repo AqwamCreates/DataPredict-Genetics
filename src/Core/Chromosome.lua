@@ -156,7 +156,7 @@ function Chromosome:getGeneValueArray()
 	
 	local geneValueArray = {}
 	
-	for geneIndex, Gene in ipairs(Chromosome.geneArray) do
+	for geneIndex, Gene in ipairs(self.geneArray) do
 		
 		geneValueArray[geneIndex] = Gene.value
 		
