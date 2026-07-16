@@ -1,5 +1,7 @@
 # Welcome to Aqwam's DataPredict™ Axon Library!
 
+> When Gradients Fail, Go Zero
+
 ## Commercial Use Information
 
 * [Commercial Use Licensing](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md)
