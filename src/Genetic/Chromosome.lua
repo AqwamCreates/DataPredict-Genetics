@@ -124,12 +124,6 @@ function Chromosome:activate(environmentArray)
 	
 end
 
-function Chromosome:clone()
-
-	return deepCopyValue(self)
-
-end
-
 function Chromosome:crossover(OtherChromosome, crossoverRate)
 	
 	local ClonedChromosome = self:clone()
@@ -156,6 +150,12 @@ function Chromosome:crossover(OtherChromosome, crossoverRate)
 	
 	return ClonedChromosome, ClonedOtherChromosome
 	
+end
+
+function Chromosome:clone()
+
+	return deepCopyValue(self)
+
 end
 
 function Chromosome:__tostring()
