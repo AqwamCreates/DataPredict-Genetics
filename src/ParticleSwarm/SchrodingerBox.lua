@@ -194,7 +194,7 @@ function SchrodingerBox:observe(environmentArray)
 			
 		end
 
-		Particle:updateVelocity(inertiaArray, cognitiveArray, socialArray)
+		Particle:applyImpulse(inertiaArray, cognitiveArray, socialArray)
 
 		Particle:move(minimumBoundArray, maximumBoundArray)
 		
