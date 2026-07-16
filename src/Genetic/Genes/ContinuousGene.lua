@@ -30,8 +30,6 @@ local BaseGene = require(script.Parent.BaseGene)
 
 local mathRandom = math.random
 
-local mathHuge = math.huge
-
 local mathSqrt = math.sqrt
 
 local mathLog = math.log
@@ -39,6 +37,10 @@ local mathLog = math.log
 local mathCos = math.cos
 
 local mathPi = math.pi
+
+local safeMaximumValue = 4.5e15
+
+local safeMinimumValue = -4.5e15
 
 local ContinuousGene = {}
 
@@ -54,19 +56,29 @@ function ContinuousGene.new(parameterDictionary)
 	
 	local mutationChance = parameterDictionary.mutationChance or 0
 	
+	local maximumValue = parameterDictionary.maximumValue or safeMaximumValue
+	
+	local minimumValue = parameterDictionary.minimumValue or safeMinimumValue
+	
 	local mutationStandardDeviation = parameterDictionary.mutationStandardDeviation or 1
 	
-	local maximumValue = parameterDictionary.maximumValue or mathHuge
+	local mutationMode = parameterDictionary.mutationMode or "Local"
 	
-	local minimumValue = parameterDictionary.minimumValue or -mathHuge
+	value = math.clamp(value, minimumValue, maximumValue)
 	
 	parameterDictionary.type = "Continuous"
 	
 	local NewContinuousGene = BaseGene.new(parameterDictionary)
 
 	setmetatable(NewContinuousGene, ContinuousGene)
-
+	
+	NewContinuousGene.maximumValue = maximumValue
+	
+	NewContinuousGene.minimumValue = minimumValue
+	
 	NewContinuousGene.mutationStandardDeviation = mutationStandardDeviation
+	
+	NewContinuousGene.mutationMode = mutationMode
 
 	return NewContinuousGene
 
@@ -75,12 +87,36 @@ end
 function ContinuousGene:mutate(forceMutate)
 	
 	if (not forceMutate) and (self.mutationChance <= mathRandom()) then return end
-		
-	local mutationValue = self.mutationStandardDeviation * mathSqrt(-2 * mathLog(mathRandom())) * mathCos(2 * mathPi * mathRandom())
 	
-	mutationValue = math.clamp(mutationValue, self.minimumValue, self.maximumValue)
+	local maximumValue = self.maximumValue
+	
+	local minimumValue = self.minimumValue
+	
+	local mutationMode = self.mutationMode
+	
+	local mutationValue = 0
+	
+	if (mutationMode == "Local") then
+		
+		local mutationValue = self.mutationStandardDeviation * mathSqrt(-2 * mathLog(mathRandom())) * mathCos(2 * mathPi * mathRandom())
+		
+		mutationValue = self.value + mutationValue
+		
+	elseif (mutationMode == "Global") then
+		
+		local range = maximumValue - minimumValue
+		
+		mutationValue = minimumValue + (mathRandom() * range)
+		
+	else
+		
+		error("Invalid mutation mode.")
+		
+	end
+	
+	mutationValue = math.clamp(mutationValue, minimumValue, maximumValue)
 
-	self.value = self.value + mutationValue
+	self.value = mutationValue
 
 end
 
