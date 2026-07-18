@@ -40,6 +40,8 @@ local SimulatedAnnealing = script.SimulatedAnnealing
 
 local ParticleSwarm = script.ParticleSwarm
 
+local DifferentialEvolution = script.DifferentialEvolution
+
 AqwamDerivativeFreeOptimizationLibrary.Core = {
 	
 	Genes = {
@@ -85,6 +87,12 @@ AqwamDerivativeFreeOptimizationLibrary.SimulatedAnnealing = {
 AqwamDerivativeFreeOptimizationLibrary.ParticleSwarm = {
 
 	SchrodingerBox = require(ParticleSwarm.SchrodingerBox),
+
+}
+
+AqwamDerivativeFreeOptimizationLibrary.DifferentialEvolution = {
+
+	VectorizedPetriDish = require(DifferentialEvolution.VectorizedPetriDish),
 
 }
 
