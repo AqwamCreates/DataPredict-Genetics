@@ -98,7 +98,7 @@ function Chromosome.new(parameterDictionary)
 
 	NewChromosome.GeneArray = parameterDictionary.GeneArray or {}
 	
-	NewChromosome.mutationChance = parameterDictionary.mutationChance or 0
+	NewChromosome.mutationProbability = parameterDictionary.mutationProbability or 0
 	
 	NewChromosome.activationFunction = parameterDictionary.activationFunction or defaultActivationFunction
 
@@ -108,7 +108,7 @@ end
 
 function Chromosome:mutate(forceMutateChromosome, forceMutateGene)
 	
-	if (not forceMutateChromosome) and (self.mutationChance <= mathRandom()) then return end
+	if (not forceMutateChromosome) and (self.mutationProbability <= mathRandom()) then return end
 	
 	for i, Gene in ipairs(self.GeneArray) do Gene:mutate(forceMutateGene) end
 	
