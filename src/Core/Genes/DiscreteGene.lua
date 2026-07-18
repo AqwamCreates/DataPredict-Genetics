@@ -194,7 +194,7 @@ end
 
 function DiscreteGene:mutate(forceMutate)
 
-	if (not forceMutate) and (self.mutationChance <= mathRandom()) then return end
+	if (not forceMutate) and (self.mutationProbability <= mathRandom()) then return end
 	
 	local mutationChoiceArray = self.mutationChoiceArray
 	
