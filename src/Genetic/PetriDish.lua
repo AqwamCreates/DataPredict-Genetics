@@ -48,7 +48,7 @@ function PetriDish.new(parameterDictionary)
 
 	setmetatable(NewPetriDish, PetriDish)
 	
-	NewPetriDish.populationCount = parameterDictionary.populationCount or 10
+	NewPetriDish.populationSize = parameterDictionary.populationSize or 10
 
 	NewPetriDish.eliteCount = parameterDictionary.eliteCount or 1
 	
@@ -70,7 +70,7 @@ function PetriDish:cultivate(ChromosomeArray, scoreArray)
 		
 	if (numberOfChromosomes ~= numberOfScores) then error("You have " .. numberOfChromosomes .. " chromosome(s), but you have " .. numberOfScores .. " score(s).") end
 	
-	local populationCount = self.populationCount
+	local populationSize = self.populationSize
 	
 	local eliteCount = self.eliteCount
 	
@@ -110,7 +110,7 @@ function PetriDish:cultivate(ChromosomeArray, scoreArray)
 		
 	end
 	
-	local remainingPopulationCountToAdd = populationCount - numberOfElites
+	local remainingpopulationSizeToAdd = populationSize - numberOfElites
 	
 	repeat
 		
@@ -120,7 +120,7 @@ function PetriDish:cultivate(ChromosomeArray, scoreArray)
 
 		local ChildA, ChildB = ParentChromosomeA:crossover(ParentChromosomeB, crossoverProbability)
 		
-		if (remainingPopulationCountToAdd >= 2) then
+		if (remainingpopulationSizeToAdd >= 2) then
 			
 			ChildA:mutate(true)
 			
@@ -130,7 +130,7 @@ function PetriDish:cultivate(ChromosomeArray, scoreArray)
 			
 			tableInsert(NewChromosomeArray, ChildB)
 			
-			remainingPopulationCountToAdd = remainingPopulationCountToAdd - 2
+			remainingpopulationSizeToAdd = remainingpopulationSizeToAdd - 2
 			
 		else
 			
@@ -144,11 +144,11 @@ function PetriDish:cultivate(ChromosomeArray, scoreArray)
 			
 			tableInsert(NewChromosomeArray, SelectedChild)
 			
-			remainingPopulationCountToAdd = remainingPopulationCountToAdd - 1
+			remainingpopulationSizeToAdd = remainingpopulationSizeToAdd - 1
 			
 		end
 		
-	until (remainingPopulationCountToAdd <= 0)
+	until (remainingpopulationSizeToAdd <= 0)
 
 	return NewChromosomeArray
 	
